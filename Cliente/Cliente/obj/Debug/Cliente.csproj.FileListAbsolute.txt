@@ -1,0 +1,10 @@
+C:\Users\marco\Desktop\3A\SO\Proyecto\Cliente\Cliente\bin\Debug\Cliente.exe.config
+C:\Users\marco\Desktop\3A\SO\Proyecto\Cliente\Cliente\bin\Debug\Cliente.exe
+C:\Users\marco\Desktop\3A\SO\Proyecto\Cliente\Cliente\bin\Debug\Cliente.pdb
+C:\Users\marco\Desktop\3A\SO\Proyecto\Cliente\Cliente\obj\Debug\Cliente.csproj.AssemblyReference.cache
+C:\Users\marco\Desktop\3A\SO\Proyecto\Cliente\Cliente\obj\Debug\Cliente.Properties.Resources.resources
+C:\Users\marco\Desktop\3A\SO\Proyecto\Cliente\Cliente\obj\Debug\Cliente.csproj.GenerateResource.cache
+C:\Users\marco\Desktop\3A\SO\Proyecto\Cliente\Cliente\obj\Debug\Cliente.csproj.CoreCompileInputs.cache
+C:\Users\marco\Desktop\3A\SO\Proyecto\Cliente\Cliente\obj\Debug\Cliente.exe
+C:\Users\marco\Desktop\3A\SO\Proyecto\Cliente\Cliente\obj\Debug\Cliente.pdb
+C:\Users\marco\Desktop\3A\SO\Proyecto\Cliente\Cliente\obj\Debug\Cliente.Geometry_wars.resources
