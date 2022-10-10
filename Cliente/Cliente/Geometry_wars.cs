@@ -21,12 +21,6 @@ namespace Cliente
 
         private void login_Click(object sender, EventArgs e)
         {
-            IPAddress direc = IPAddress.Parse("192.168.56.101");
-            IPEndPoint ipep = new IPEndPoint(direc, 9050);
-
-
-            //Creamos el socket 
-            server = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
             if (usuario.TextLength == 0)
                 MessageBox.Show("Introduce tu usuario");
             else if (contraseña.TextLength == 0)
@@ -35,8 +29,6 @@ namespace Cliente
             {
                 try
                 {
-                    server.Connect(ipep);//Intentamos conectar el socket
-                                         // Quiere saber la longitud
                     string mensaje = "1/" + usuario.Text+"/"+contraseña.Text;
                     // Enviamos al servidor el nombre tecleado
                     byte[] msg = System.Text.Encoding.ASCII.GetBytes(mensaje);
@@ -45,8 +37,7 @@ namespace Cliente
                     //Recibimos la respuesta del servidor
                     byte[] msg2 = new byte[80];
                     server.Receive(msg2);
-                    mensaje = Encoding.ASCII.GetString(msg2).Split('\0')[0];
-                    MessageBox.Show(mensaje);
+                    mensaje = Encoding.ASCII.GetString(msg2).Split('\0')[0];     
                     if (mensaje == "SI")
                     {
                         MessageBox.Show("Bienvenido");
@@ -54,6 +45,8 @@ namespace Cliente
                         contraseña.Visible = false;
                         label2.Visible = false;
                         label3.Visible = false;
+                        edad.Visible = false;
+                        label4.Visible = false;
                         login.Visible = false;
                         registration.Visible = false;
                         label1.Visible = true;
@@ -77,23 +70,21 @@ namespace Cliente
 
         private void registration_Click(object sender, EventArgs e)
         {
-            IPAddress direc = IPAddress.Parse("192.168.56.102");
-            IPEndPoint ipep = new IPEndPoint(direc, 9050);
-
 
             //Creamos el socket 
-            server = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
             if (usuario.TextLength == 0)
                 MessageBox.Show("Introduce el usuario que quieres crear");
             else if (contraseña.TextLength == 0)
                 MessageBox.Show("Introduce tu contraseña");
+            else if (edad.TextLength==0)
+                MessageBox.Show("Introduce tu edad");
             else
             {
                 try
                 {
-                    server.Connect(ipep);//Intentamos conectar el socket
+                    //Intentamos conectar el socket
                                          // Quiere saber la longitud
-                    string mensaje = "2/" + usuario.Text + "/" + contraseña.Text;
+                    string mensaje = "2/" + usuario.Text + "/" + contraseña.Text+"/"+edad.Text;
                     // Enviamos al servidor el nombre tecleado
                     byte[] msg = System.Text.Encoding.ASCII.GetBytes(mensaje);
                     server.Send(msg);
@@ -103,7 +94,10 @@ namespace Cliente
                     server.Receive(msg2);
                     mensaje = Encoding.ASCII.GetString(msg2).Split('\0')[0];
 
-                    MessageBox.Show("La longitud de tu nombre es: " + mensaje);
+                    if (mensaje == "SI")
+                    { 
+                        MessageBox.Show("Te has inscrito correctamente");
+                    }
                 }
 
                 catch (SocketException)
@@ -114,6 +108,17 @@ namespace Cliente
                 }
             }
 
+        }
+
+        private void Geometry_wars_Load(object sender, EventArgs e)
+        {
+            IPAddress direc = IPAddress.Parse("192.168.56.101");
+            IPEndPoint ipep = new IPEndPoint(direc, 9050);
+
+
+            //Creamos el socket 
+            server = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
+            server.Connect(ipep);
         }
     }
 }

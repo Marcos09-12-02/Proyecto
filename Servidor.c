@@ -59,7 +59,8 @@ int main(int argc, char *argv[])
 			
 			char usuario [20];
 			char password[20];
-			if (codigo==1 || codigo==2)
+			int edad;
+			if (codigo==1)
 			{
 				p = strtok(NULL, "/");
 				strcpy (usuario, p);
@@ -67,6 +68,16 @@ int main(int argc, char *argv[])
 				p=strtok(NULL, "/");
 				strcpy(password,p);
 				printf ("Codigo: %d, Nombre: %s Contrase￱a: %s \n", codigo, usuario,password);
+			}
+			if (codigo==2)
+			{
+				p = strtok(NULL, "/");
+				strcpy (usuario, p);
+				p=strtok(NULL, "/");
+				strcpy(password,p);
+				p=strtok(NULL,"/");
+				edad=atoi(p);
+				printf ("Codigo: %d, Nombre: %s Contrase￱a: %s Edad: %d \n", codigo,usuario,password,edad);
 			}
 			if (codigo ==1) //piden la longitd del nombre
 			{
@@ -107,36 +118,84 @@ int main(int argc, char *argv[])
 				{
 					printf ("Se ha encontrado al jugador \n");
 					strcpy(respuesta,"SI");//Si se ha encontrado al jugador
-					printf(respuesta);
+					
 				}
 				mysql_close (conn);
-				exit(0);
+				
 			}
 			
-			if(codigo==2)
+			else if(codigo==2)
 				// quieren saber si el nombre es bonito
-				if((usuario[0]=='M') || (usuario[0]=='S'))
-				strcpy (respuesta,"SI");
-				else
-					strcpy (respuesta,"NO");
+			{
+				char consulta1 [80];
+				int num_usuarios;
+				//Creamos una conexion al servidor MYSQL 
+				conn = mysql_init(NULL);
+				if (conn==NULL) {
+					printf ("Error al crear la conexion: %u %s\n",
+							mysql_errno(conn), mysql_error(conn));
+					exit (1);
+				}
+				conn = mysql_real_connect (conn, "localhost","root", "mysql", "geometry_wars",0, NULL, 0);
+				if (conn==NULL) {
+					printf ("Error al inicializar la conexion: %u %s\n",
+							mysql_errno(conn), mysql_error(conn));
+					exit (1);
+				}
+				strcpy(consulta1,"SELECT * FROM jugador WHERE jugador.id=(SELECT max(jugador.id) FROM jugador);");
+				err=mysql_query (conn, consulta1);
+				if (err!=0) {
+					printf ("Error al consultar datos de la base %u %s\n",mysql_errno(conn), mysql_error(conn));
+					exit (1);
+				}
+				resultado = mysql_store_result (conn);
+				
+				row = mysql_fetch_row (resultado);
+				
+				num_usuarios=atoi(row[0]);
+				printf("Hay %d usuarios\n",num_usuarios);
+				
+				int id=num_usuarios+1;
+				char consulta2 [80];
+				strcpy (consulta2, "INSERT INTO jugador VALUES (");
+				char ids [3];
+				sprintf(ids, "%d", id);
+				strcat(consulta2,ids);
+				strcat(consulta2,",'");
+				strcat(consulta2,usuario);
+				strcat(consulta2,"','");
+				strcat(consulta2,password);
+				strcat(consulta2,"',");
+				char edads [3];
+				sprintf(edads, "%d", edad);
+				strcat(consulta2,edads);
+				strcat(consulta2, ");");
+				err=mysql_query (conn, consulta2);
+				if (err!=0) {
+					printf ("Error al consultar datos de la base %u %s\n",mysql_errno(conn), mysql_error(conn));
+					exit (1);
+				}
 				else
 				{
-					float altura;
-					p=strtok(NULL,"/");
-					altura=atof(p);
-					if (altura>1.7)
-						strcpy(respuesta, "ERES ALTO");
-					else
-						strcpy(respuesta, "NO ERES ALTO");
+					printf ("Se ha inscrito al jugador \n");
+					strcpy(respuesta,"SI");
 				}
+					
 				
+			}
+			if (codigo !=0)
+			{
 				
-				// Enviamos la respuesta
-			write (sock_conn,respuesta, strlen(respuesta));
-				
+				printf ("Respuesta: %s\n", respuesta);
+
+				write (sock_conn,respuesta, strlen(respuesta));
+			}
+					
 				// Se acabo el servicio para este cliente
 				
 		}
 		close(sock_conn); 
 	}
 }
+
+

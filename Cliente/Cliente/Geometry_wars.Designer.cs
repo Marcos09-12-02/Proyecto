@@ -39,6 +39,8 @@ namespace Cliente
             this.consulta1 = new System.Windows.Forms.RadioButton();
             this.consulta2 = new System.Windows.Forms.RadioButton();
             this.consulta3 = new System.Windows.Forms.RadioButton();
+            this.edad = new System.Windows.Forms.TextBox();
+            this.label4 = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
             // usuario
@@ -139,11 +141,29 @@ namespace Cliente
             this.consulta3.UseVisualStyleBackColor = true;
             this.consulta3.Visible = false;
             // 
-            // Form1
+            // edad
+            // 
+            this.edad.Location = new System.Drawing.Point(523, 204);
+            this.edad.Name = "edad";
+            this.edad.Size = new System.Drawing.Size(197, 26);
+            this.edad.TabIndex = 11;
+            // 
+            // label4
+            // 
+            this.label4.AutoSize = true;
+            this.label4.Location = new System.Drawing.Point(582, 157);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(47, 20);
+            this.label4.TabIndex = 12;
+            this.label4.Text = "Edad";
+            // 
+            // Geometry_wars
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(800, 450);
+            this.Controls.Add(this.label4);
+            this.Controls.Add(this.edad);
             this.Controls.Add(this.consulta3);
             this.Controls.Add(this.consulta2);
             this.Controls.Add(this.consulta1);
@@ -154,8 +174,9 @@ namespace Cliente
             this.Controls.Add(this.label2);
             this.Controls.Add(this.contraseña);
             this.Controls.Add(this.usuario);
-            this.Name = "Form1";
+            this.Name = "Geometry_wars";
             this.Text = "Form1";
+            this.Load += new System.EventHandler(this.Geometry_wars_Load);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -173,6 +194,8 @@ namespace Cliente
         private System.Windows.Forms.RadioButton consulta1;
         private System.Windows.Forms.RadioButton consulta2;
         private System.Windows.Forms.RadioButton consulta3;
+        private System.Windows.Forms.TextBox edad;
+        private System.Windows.Forms.Label label4;
     }
 }
 
