@@ -27,43 +27,34 @@ namespace Cliente
                 MessageBox.Show("Introduce tu contraseña");
             else 
             {
-                try
-                {
-                    string mensaje = "1/" + usuario.Text+"/"+contraseña.Text;
-                    // Enviamos al servidor el nombre tecleado
-                    byte[] msg = System.Text.Encoding.ASCII.GetBytes(mensaje);
-                    server.Send(msg);
+                string mensaje = "1/" + usuario.Text + "/" + contraseña.Text;
+                // Enviamos al servidor el nombre tecleado
+                byte[] msg = System.Text.Encoding.ASCII.GetBytes(mensaje);
+                server.Send(msg);
 
-                    //Recibimos la respuesta del servidor
-                    byte[] msg2 = new byte[80];
-                    server.Receive(msg2);
-                    mensaje = Encoding.ASCII.GetString(msg2).Split('\0')[0];     
-                    if (mensaje == "SI")
-                    {
-                        MessageBox.Show("Bienvenido");
-                        usuario.Visible = false;
-                        contraseña.Visible = false;
-                        label2.Visible = false;
-                        label3.Visible = false;
-                        edad.Visible = false;
-                        label4.Visible = false;
-                        login.Visible = false;
-                        registration.Visible = false;
-                        label1.Visible = true;
-                        consulta1.Visible = true;
-                        consulta2.Visible = true;
-                        consulta3.Visible = true;
-                    }
-                    else
-                        MessageBox.Show("No se ha encontrado el usuario,revisa tu contraseña o registrate");
-                }
-
-                catch (SocketException)
+                //Recibimos la respuesta del servidor
+                byte[] msg2 = new byte[80];
+                server.Receive(msg2);
+                mensaje = Encoding.ASCII.GetString(msg2).Split('\0')[0];
+                if (mensaje == "SI")
                 {
-                    //Si hay excepcion imprimimos error y salimos del programa con return 
-                    MessageBox.Show("No he podido conectar con el servidor");
-                    return;
+                    MessageBox.Show("Bienvenido");
+                    usuario.Visible = false;
+                    contraseña.Visible = false;
+                    label2.Visible = false;
+                    label3.Visible = false;
+                    edad.Visible = false;
+                    label4.Visible = false;
+                    login.Visible = false;
+                    registration.Visible = false;
+                    label1.Visible = true;
+                    consulta1.Visible = true;
+                    consulta2.Visible = true;
+                    consulta3.Visible = true;
                 }
+                else
+                    MessageBox.Show("No se ha encontrado el usuario,revisa tu contraseña o registrate");
+
             }
             
         }
@@ -80,31 +71,21 @@ namespace Cliente
                 MessageBox.Show("Introduce tu edad");
             else
             {
-                try
+                //Intentamos conectar el socket
+                // Quiere saber la longitud
+                string mensaje = "2/" + usuario.Text + "/" + contraseña.Text + "/" + edad.Text;
+                // Enviamos al servidor el nombre tecleado
+                byte[] msg = System.Text.Encoding.ASCII.GetBytes(mensaje);
+                server.Send(msg);
+
+                //Recibimos la respuesta del servidor
+                byte[] msg2 = new byte[80];
+                server.Receive(msg2);
+                mensaje = Encoding.ASCII.GetString(msg2).Split('\0')[0];
+
+                if (mensaje == "SI")
                 {
-                    //Intentamos conectar el socket
-                                         // Quiere saber la longitud
-                    string mensaje = "2/" + usuario.Text + "/" + contraseña.Text+"/"+edad.Text;
-                    // Enviamos al servidor el nombre tecleado
-                    byte[] msg = System.Text.Encoding.ASCII.GetBytes(mensaje);
-                    server.Send(msg);
-
-                    //Recibimos la respuesta del servidor
-                    byte[] msg2 = new byte[80];
-                    server.Receive(msg2);
-                    mensaje = Encoding.ASCII.GetString(msg2).Split('\0')[0];
-
-                    if (mensaje == "SI")
-                    { 
-                        MessageBox.Show("Te has inscrito correctamente");
-                    }
-                }
-
-                catch (SocketException)
-                {
-                    //Si hay excepcion imprimimos error y salimos del programa con return 
-                    MessageBox.Show("No he podido conectar con el servidor");
-                    return;
+                    MessageBox.Show("Te has inscrito correctamente");
                 }
             }
 
@@ -112,13 +93,22 @@ namespace Cliente
 
         private void Geometry_wars_Load(object sender, EventArgs e)
         {
-            IPAddress direc = IPAddress.Parse("192.168.56.101");
-            IPEndPoint ipep = new IPEndPoint(direc, 9050);
+            try {
+                IPAddress direc = IPAddress.Parse("192.168.56.101");
+                IPEndPoint ipep = new IPEndPoint(direc, 9050);
 
 
-            //Creamos el socket 
-            server = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
-            server.Connect(ipep);
+                //Creamos el socket 
+                server = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
+                server.Connect(ipep);
+            }
+            catch (SocketException)
+            {
+                //Si hay excepcion imprimimos error y salimos del programa con return 
+                MessageBox.Show("No he podido conectar con el servidor");
+                return;
+            }
+
         }
     }
 }
